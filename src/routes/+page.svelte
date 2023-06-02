@@ -13,9 +13,6 @@
 	<div class="col-6 form-widget">
 		{#if data.session}
 			Bem vindo a essa desgraça {data.session.user.email}
-			<form method="post" action="/api/logout">
-				<button type="submit">Logout</button>
-			</form>
 		{:else}
 			<Login />
 		{/if}
