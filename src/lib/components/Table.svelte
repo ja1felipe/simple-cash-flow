@@ -1,6 +1,10 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { DataHandler, Datatable, Th } from '@vincjo/datatables';
+	import { modal } from 'gros/modal';
+	import Delete from './Modals/ModalDelete.svelte';
+
+	export let onDelete: (...args: any[]) => void;
 	export let data;
 	const handler = new DataHandler(data, {
 		rowsPerPage: 10,
@@ -37,7 +41,10 @@
 					<td>{row.date}</td>
 					<td>{row.payment_method}</td>
 					<td>
-						<button class="btn">
+						<button
+							class="btn"
+							on:click={() => modal.open(Delete, { type: 'entrada', onDelete: onDelete, row })}
+						>
 							<Icon icon="material-symbols:delete-outline" />
 						</button>
 					</td>

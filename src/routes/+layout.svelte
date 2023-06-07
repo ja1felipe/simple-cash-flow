@@ -7,6 +7,7 @@
 	import { Toaster } from 'svelte-french-toast';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { ModalContainer } from 'gros/modal';
 
 	export let data;
 
@@ -26,6 +27,7 @@
 <svelte:head>
 	<title>User Management</title>
 </svelte:head>
+<ModalContainer />
 <Toaster />
 <div>
 	<slot />

@@ -1,23 +1,31 @@
 <script lang="ts">
 	import { Modal } from 'gros/modal';
 	export let close: () => void;
-	export let props;
+	type Props = {
+		type: 'entrada' | 'saída';
+		onDelete: (...args: any[]) => void;
+		row: any;
+	};
+	export let props: Props;
+
+	let { type, onDelete, row } = props;
+
+	console.log(typeof onDelete);
 </script>
 
-<Modal title="Remove a user" icon="delete_forever">
+<Modal title="Deletar documento" icon="delete_forever">
 	<aside>
-		Are you sure you want to permanently delete the user "<strong
-			>{props.first_name} {props.last_name}</strong
-		>" ?
+		Tem certeza que deseja deletar essa {type} permanentemente?
 	</aside>
 
 	<svelte:fragment slot="footer">
 		<button
 			on:click={() => {
+				onDelete(row.id);
 				close();
-			}}>Delete</button
+			}}>Deletar</button
 		>
-		<button on:click={close}>Cancel</button>
+		<button on:click={close}>Cancelar</button>
 	</svelte:fragment>
 </Modal>
 

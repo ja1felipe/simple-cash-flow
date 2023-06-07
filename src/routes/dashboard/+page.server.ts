@@ -1,31 +1,29 @@
-import type { PageServerLoad } from "./$types"
+import type { Entry } from '$lib/stores/entries';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals: { supabase } }) => {
+	const getEntries = async () => {
+		let { data: entries, error: err } = await supabase.from('entries').select();
 
-    const getEntries = async () => {
-        let { data: entries, error: err } = await supabase.from('entries').select()
+		if (err) {
+			return null;
+		}
 
-        console.log('aaaaa', entries)
+		return entries as Entry[];
+	};
 
-        if (err) {
-            return null
-        }
+	const getOutflows = async () => {
+		let { data: outflows, error: err } = await supabase.from('outflows').select();
 
-        return entries
-    }
+		if (err) {
+			return null;
+		}
 
-    const getOutflows = async () => {
-        let { data: outflows, error: err } = await supabase.from('outflows').select()
+		return outflows;
+	};
 
-        if (err) {
-            return null
-        }
-
-        return outflows
-    }
-
-    return {
-        entries: getEntries(),
-        outflows: getOutflows()
-    }
-}
+	return {
+		entries: getEntries(),
+		outflows: getOutflows()
+	};
+};

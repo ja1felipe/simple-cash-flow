@@ -2,12 +2,19 @@
 	import Icon from '@iconify/svelte';
 	import type { PageData } from './$types';
 	import Table from '$lib/components/Table.svelte';
+	import { entries, removeEntry } from '$lib/stores/entries';
 	export let data: PageData;
+
+	entries.set(data.entries!);
 
 	let tabSelected = 0;
 
 	function handleClick(index: number) {
 		tabSelected = index;
+	}
+
+	$: $entries: {
+		console.log($entries);
 	}
 </script>
 
@@ -33,9 +40,9 @@
 				</div>
 				<section style="border: 1px dashed rgb(175, 0, 0); border-radius: 5px;">
 					{#if tabSelected == 0}
-						<Table data={data.entries} />
+						<Table onDelete={removeEntry} data={$entries} />
 					{:else}
-						<Table data={data.outflows} />
+						<Table onDelete={removeEntry} data={data.outflows} />
 					{/if}
 				</section>
 			</div>
