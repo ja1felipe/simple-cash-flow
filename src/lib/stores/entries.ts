@@ -8,14 +8,20 @@ export interface Entry {
 	date: string;
 	payment_method: string;
 }
+function createStore() {
+	const { subscribe, update, set } = writable<Entry[]>([]);
 
-export const entries = writable<Entry[]>([]);
-
-export function removeEntry(id: number) {
-	entries.update((currentEntries) => {
-		return currentEntries.filter((entry) => {
-			console.log(entry, id);
-			return entry.id !== id;
-		});
-	});
+	return {
+		subscribe,
+		set,
+		removeEntry(id: number) {
+			update((currentEntries) => {
+				return currentEntries.filter((entry) => {
+					return entry.id !== id;
+				});
+			});
+		}
+	}
 }
+
+export const entries = createStore()

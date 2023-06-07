@@ -1,4 +1,5 @@
 import type { Entry } from '$lib/stores/entries';
+import type { Outflow } from '$lib/stores/outflows';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals: { supabase } }) => {
@@ -14,12 +15,12 @@ export const load: PageServerLoad = async ({ locals: { supabase } }) => {
 
 	const getOutflows = async () => {
 		let { data: outflows, error: err } = await supabase.from('outflows').select();
-
+		console.log(outflows)
 		if (err) {
 			return null;
 		}
 
-		return outflows;
+		return outflows as Outflow[];
 	};
 
 	return {

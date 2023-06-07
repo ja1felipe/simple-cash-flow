@@ -9,8 +9,6 @@
 	export let props: Props;
 
 	let { type, onDelete, row } = props;
-
-	console.log(typeof onDelete);
 </script>
 
 <Modal title="Deletar documento" icon="delete_forever">

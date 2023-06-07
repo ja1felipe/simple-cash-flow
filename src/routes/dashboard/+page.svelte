@@ -2,10 +2,49 @@
 	import Icon from '@iconify/svelte';
 	import type { PageData } from './$types';
 	import Table from '$lib/components/Table.svelte';
-	import { entries, removeEntry } from '$lib/stores/entries';
+	import { entries } from '$lib/stores/entries';
+	import { outflows } from '$lib/stores/outflows';
+	import { modal } from 'gros/modal';
+	import Create from '$lib/components/Modals/CreateEntry.svelte';
+
 	export let data: PageData;
 
 	entries.set(data.entries!);
+	outflows.set(data.outflows!);
+
+	const entriesRows = [
+		{
+			value: 'description',
+			name: 'Descrição'
+		},
+		{
+			value: 'value',
+			name: 'Valor'
+		},
+		{
+			value: 'date',
+			name: 'Data'
+		},
+		{
+			value: 'payment_method',
+			name: 'Método de pagamento'
+		}
+	];
+
+	const outflowsRows = [
+		{
+			value: 'description',
+			name: 'Descrição'
+		},
+		{
+			value: 'value',
+			name: 'Valor'
+		},
+		{
+			value: 'date',
+			name: 'Data'
+		}
+	];
 
 	let tabSelected = 0;
 
@@ -13,8 +52,22 @@
 		tabSelected = index;
 	}
 
-	$: $entries: {
-		console.log($entries);
+	async function handleDeleteEntry(id: number) {
+		const res = await fetch(`api/entries/${id}`, { method: 'DELETE' });
+		const js = await res.json();
+
+		if (js.success) {
+			entries.removeEntry(id);
+		}
+	}
+
+	async function handleDeleteOutflow(id: number) {
+		const res = await fetch(`api/outflows/${id}`, { method: 'DELETE' });
+		const js = await res.json();
+
+		if (js.success) {
+			outflows.removeOutflow(id);
+		}
 	}
 </script>
 
@@ -34,15 +87,15 @@
 						Entradas
 					</button>
 					<button class:active={tabSelected == 1} on:click={() => handleClick(1)}> Saídas </button>
-					<button style="margin-left: auto;" on:click={() => handleClick(1)}>
+					<button style="margin-left: auto;" on:click={() => modal.open(Create)}>
 						Adicionar {tabSelected == 0 ? 'entrada' : 'saída'}
 					</button>
 				</div>
 				<section style="border: 1px dashed rgb(175, 0, 0); border-radius: 5px;">
 					{#if tabSelected == 0}
-						<Table onDelete={removeEntry} data={$entries} />
+						<Table rows={entriesRows} onDelete={handleDeleteEntry} data={$entries} />
 					{:else}
-						<Table onDelete={removeEntry} data={data.outflows} />
+						<Table rows={outflowsRows} onDelete={handleDeleteOutflow} data={$outflows} />
 					{/if}
 				</section>
 			</div>
