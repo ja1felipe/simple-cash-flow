@@ -1,46 +1,62 @@
 <script lang="ts">
 	import { Modal } from 'gros/modal';
 	import InputText from '../InputText.svelte';
+	import InputNumber from '../InputNumber.svelte';
+	import InputDate from '../InputDate.svelte';
+	import InputSelect from '../InputSelect.svelte';
 	const form = {
 		description: undefined,
 		value: undefined,
 		date: undefined,
-		payment_method: undefined
+		payment_method: 'Pix'
 	};
 	export let close: () => void;
 </script>
 
 <Modal title="Adicionar entrada de fluxo" icon="attach_money">
-	<aside>
+	<form method="post" action="?/create">
 		<InputText
-			icon="person"
+			icon="assignment"
 			bind:value={form.description}
 			name="description"
 			id="description"
 			placeholder="Descrição"
 		/>
-		<InputText
+		<InputNumber
 			icon="attach_money"
 			bind:value={form.value}
 			name="value"
 			id="value"
-			placeholder="Valor da entrada"
+			placeholder={0}
 		/>
-		<InputText
+		<InputDate
 			icon="date_range"
 			bind:value={form.date}
 			name="date"
 			id="date"
 			placeholder="Data da entrada"
 		/>
-		<InputText
+		<InputSelect
 			icon="credit_card"
 			bind:value={form.payment_method}
 			name="payment_method"
 			id="payment_method"
-			placeholder="Método de pagamento"
+			options={[
+				{
+					name: 'Pix',
+					value: 'Pix'
+				},
+				{
+					name: 'Cartão de crédito',
+					value: 'Cartao'
+				},
+				{
+					name: 'Outro',
+					value: 'Outro'
+				}
+			]}
 		/>
-	</aside>
+	</form>
 
 	<svelte:fragment slot="footer">
 		<button
@@ -53,7 +69,7 @@
 </Modal>
 
 <style>
-	aside {
+	form {
 		display: flex;
 		flex-direction: column;
 		gap: 5px;

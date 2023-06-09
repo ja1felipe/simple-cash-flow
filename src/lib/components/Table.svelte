@@ -53,7 +53,7 @@
 							class="btn"
 							on:click={() => modal.open(Delete, { type: 'entrada', onDelete: onDelete, row })}
 						>
-							<Icon icon="material-symbols:delete-outline" />
+							<i class="micon">delete_forever</i>
 						</button>
 					</td>
 				</tr>
