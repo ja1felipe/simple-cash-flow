@@ -20,8 +20,14 @@ function createStore() {
 					return entry.id !== id;
 				});
 			});
+		},
+		addEntry(entry: Entry) {
+			update((currentEntries) => {
+				currentEntries.push(entry);
+				return currentEntries;
+			});
 		}
-	}
+	};
 }
 
-export const entries = createStore()
+export const entries = createStore();

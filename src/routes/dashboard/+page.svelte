@@ -5,7 +5,8 @@
 	import { entries } from '$lib/stores/entries';
 	import { outflows } from '$lib/stores/outflows';
 	import { modal } from 'gros/modal';
-	import Create from '$lib/components/Modals/CreateEntry.svelte';
+	import CreateEntry from '$lib/components/Modals/CreateEntry.svelte';
+	import CreateOutflow from '$lib/components/Modals/CreateOutflow.svelte';
 
 	export let data: PageData;
 
@@ -19,11 +20,18 @@
 		},
 		{
 			value: 'value',
-			name: 'Valor'
+			name: 'Valor',
+			format: (value: string) => {
+				return `R$${value}`;
+			}
 		},
 		{
 			value: 'date',
-			name: 'Data'
+			name: 'Data',
+			format: (date: string) => {
+				let newDate = new Date(date).toLocaleDateString('pt-BR');
+				return newDate;
+			}
 		},
 		{
 			value: 'payment_method',
@@ -38,11 +46,18 @@
 		},
 		{
 			value: 'value',
-			name: 'Valor'
+			name: 'Valor',
+			format: (value: string) => {
+				return `R$${value}`;
+			}
 		},
 		{
 			value: 'date',
-			name: 'Data'
+			name: 'Data',
+			format: (date: string) => {
+				let newDate = new Date(date).toLocaleDateString('pt-BR');
+				return newDate;
+			}
 		}
 	];
 
@@ -87,7 +102,16 @@
 						Entradas
 					</button>
 					<button class:active={tabSelected == 1} on:click={() => handleClick(1)}> Saídas </button>
-					<button style="margin-left: auto;" on:click={() => modal.open(Create)}>
+					<button
+						style="margin-left: auto;"
+						on:click={() => {
+							if (tabSelected == 0) {
+								modal.open(CreateEntry);
+							} else {
+								modal.open(CreateOutflow);
+							}
+						}}
+					>
 						Adicionar {tabSelected == 0 ? 'entrada' : 'saída'}
 					</button>
 				</div>

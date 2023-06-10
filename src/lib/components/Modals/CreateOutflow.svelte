@@ -3,29 +3,27 @@
 	import InputText from '../InputText.svelte';
 	import InputNumber from '../InputNumber.svelte';
 	import InputDate from '../InputDate.svelte';
-	import InputSelect from '../InputSelect.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import toast from 'svelte-french-toast';
 	import { enhance } from '$app/forms';
-	import { entries, type Entry } from '$lib/stores/entries';
+	import { outflows, type Outflow } from '$lib/stores/outflows';
 	const form = {
 		description: undefined,
 		value: undefined,
-		date: undefined,
-		payment_method: 'Pix'
+		date: undefined
 	};
 	export let close: () => void;
 
-	const createEntry: SubmitFunction = ({}) => {
+	const createOutflow: SubmitFunction = ({}) => {
 		return async ({ result, update }) => {
 			switch (result.type) {
 				case 'failure':
 					toast.error(result.data?.error);
 					break;
 				case 'success':
-					toast.success('Entrada de fluxo adicionada com sucesso');
-					let data = result.data?.entry as Entry;
-					entries.addEntry(data);
+					toast.success('Saída de fluxo adicionada com sucesso');
+					let data = result.data?.outflow as Outflow;
+					outflows.addOutflow(data);
 					break;
 				default:
 					break;
@@ -35,8 +33,8 @@
 	};
 </script>
 
-<Modal title="Adicionar entrada de fluxo" icon="attach_money">
-	<form id="create-form" method="post" action="?/create_entry" use:enhance={createEntry}>
+<Modal title="Adicionar saída de fluxo" icon="attach_money">
+	<form id="create-form" method="post" action="?/create_outflow" use:enhance={createOutflow}>
 		<InputText
 			icon="assignment"
 			bind:value={form.description}
@@ -56,27 +54,7 @@
 			bind:value={form.date}
 			name="date"
 			id="date"
-			placeholder="Data da entrada"
-		/>
-		<InputSelect
-			icon="credit_card"
-			bind:value={form.payment_method}
-			name="payment_method"
-			id="payment_method"
-			options={[
-				{
-					name: 'Pix',
-					value: 'Pix'
-				},
-				{
-					name: 'Cartão de crédito',
-					value: 'Cartao'
-				},
-				{
-					name: 'Outro',
-					value: 'Outro'
-				}
-			]}
+			placeholder="Data da saída"
 		/>
 	</form>
 

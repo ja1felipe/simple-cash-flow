@@ -7,6 +7,7 @@
 	interface Rows {
 		name: string;
 		value: string;
+		format?: (n: string) => string;
 	}
 
 	export let onDelete: (id: number) => void;
@@ -46,7 +47,7 @@
 			{#each $rowsShow as row}
 				<tr>
 					{#each rows as head}
-						<td>{row[head.value]}</td>
+						<td>{head.format ? head.format(row[head.value]) : row[head.value]}</td>
 					{/each}
 					<td>
 						<button
