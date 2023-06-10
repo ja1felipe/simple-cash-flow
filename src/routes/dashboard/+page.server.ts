@@ -1,9 +1,16 @@
 import type { Entry } from '$lib/stores/entries';
 import type { Outflow } from '$lib/stores/outflows';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals: { supabase } }) => {
+export const load: PageServerLoad = async ({ locals: { supabase, getSession } }) => {
+	const session = await getSession();
+
+	// if the user is already logged in return them to the account page
+	if (!session) {
+		throw redirect(303, '/');
+	}
+
 	const getEntries = async () => {
 		let { data: entries, error: err } = await supabase.from('entries').select();
 
