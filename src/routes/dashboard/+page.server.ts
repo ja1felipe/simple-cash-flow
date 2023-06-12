@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ locals: { supabase, getSession } })
 
 	const getOutflows = async () => {
 		let { data: outflows, error: err } = await supabase.from('outflows').select();
-		console.log(outflows);
+
 		if (err) {
 			return null;
 		}

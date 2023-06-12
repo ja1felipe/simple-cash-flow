@@ -25,7 +25,7 @@
 </script>
 
 <svelte:head>
-	<title>User Management</title>
+	<title>Caixa Ellen</title>
 </svelte:head>
 <ModalContainer />
 <Toaster />
