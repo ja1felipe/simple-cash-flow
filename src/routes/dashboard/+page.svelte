@@ -30,7 +30,7 @@
 			value: 'date',
 			name: 'Data',
 			format: (date: string) => {
-				let newDate = new Date(date).toLocaleDateString('pt-BR');
+				let newDate = new Date(date.replace(/-/g, '/')).toLocaleDateString('pt-BR');
 				return newDate;
 			}
 		},
@@ -56,7 +56,7 @@
 			value: 'date',
 			name: 'Data',
 			format: (date: string) => {
-				let newDate = new Date(date).toLocaleDateString('pt-BR');
+				let newDate = new Date(date.replace(/-/g, '/')).toLocaleDateString('pt-BR');
 				return newDate;
 			}
 		}
@@ -98,13 +98,13 @@
 			let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getTime();
 			let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getTime();
 			showEntries = $entries.filter((d) => {
-				let time = new Date(d.date).getTime();
-				return firstDay < time && time < lastDay;
+				let time = new Date(d.date.replace(/-/g, '/')).getTime();
+				return firstDay <= time && time <= lastDay;
 			});
 
 			showOutflows = $outflows.filter((d) => {
-				let time = new Date(d.date).getTime();
-				return firstDay < time && time < lastDay;
+				let time = new Date(d.date.replace(/-/g, '/')).getTime();
+				return firstDay <= time && time <= lastDay;
 			});
 		} else {
 			showEntries = $entries;
